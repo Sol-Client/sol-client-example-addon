@@ -1,0 +1,60 @@
+plugins {
+	id 'maven-publish'
+	alias libs.plugins.quilt.loom
+}
+
+repositories {
+	maven { url 'https://repo.legacyfabric.net/repository/legacyfabric' }
+	maven { url 'https://repo.hypixel.net/repository/Hypixel' }
+	maven { url 'https://jitpack.io' }
+	maven { url 'https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1' }
+	mavenLocal()
+}
+
+dependencies {
+	minecraft(libs.minecraft)
+	mappings variantOf(libs.yarn) { classifier 'v2' }
+
+	modImplementationMapped 'io.github.solclient:sol-client-wrapper:unspecified'
+
+	def asmVersion = '9.3'
+	annotationProcessor "org.ow2.asm:asm:$asmVersion"
+	annotationProcessor "org.ow2.asm:asm-analysis:$asmVersion"
+	annotationProcessor "org.ow2.asm:asm-commons:$asmVersion"
+	annotationProcessor "org.ow2.asm:asm-tree:$asmVersion"
+	annotationProcessor "org.ow2.asm:asm-util:$asmVersion"
+}
+
+loom {
+	setIntermediaryUrl 'https://maven.legacyfabric.net/net/fabricmc/intermediary/%1$s/intermediary-%1$s-v2.jar'
+
+	runConfigs.each {
+		it.defaultMainClass 'io.github.solclient.wrapper.Launcher'
+		it.vmArgs.add '-Dio.github.solclient.client.addon.dev=true'
+		it.programArgs.add '--accessToken'
+		it.programArgs.add '0'
+		it.programArgs.add '--username'
+		it.programArgs.add 'Player'
+	}
+}
+
+java {
+	group = 'org.example.addon'
+
+	sourceCompatibility = 8
+	targetCompatibility = 8
+}
+
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = 'UTF-8'
+	it.options.release = 8
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+}

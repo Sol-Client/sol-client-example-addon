@@ -1,0 +1,7 @@
+{
+	"id": "example",
+	"main": "org.example.addon.ExampleAddon",
+	"name": "Example",
+	"version": "1.0.0",
+	"description": "An example addon for the purposes of demonstration."
+}

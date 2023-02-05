@@ -1,0 +1,10 @@
+[versions]
+minecraft = "1.8.9"
+yarn = "1.8.9+build.456"
+
+[libraries]
+minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+yarn = { module = "net.legacyfabric:yarn", version.ref = "yarn" }
+
+[plugins]
+quilt_loom = { id = "org.quiltmc.loom", version = "1.0.+" }
